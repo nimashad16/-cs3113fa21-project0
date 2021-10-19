@@ -1,5 +1,5 @@
 #The main rule
-all:
+make all:
 	gcc project0.c -o project0
-clean:
+make clean:
 	rm project0
