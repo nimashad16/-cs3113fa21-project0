@@ -1,4 +1,7 @@
-make all:
-	gcc project0.c -o project0
+make all: project0
+
+project0: project0.c
+	cc project0 -o project 0
+
 make clean:
-	rm project0
+	rm -f project 0
