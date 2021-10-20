@@ -83,6 +83,7 @@ void printValues(struct element values[], int sizeOfStruct){
         printf("%d\n", values[a].counter);
         }
 }
+}
 
 
 int main(int argc, char **argv){
