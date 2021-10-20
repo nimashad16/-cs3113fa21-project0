@@ -77,7 +77,6 @@ void printValues(struct element values[], int sizeOfStruct){                    
       
         unsigned char *characters = &byteArray[0];
         
-     
         printf("%s", characters);                                       //Will print the characters and their values
         printf("->");
         printf("%d\n", values[a].counter);
@@ -127,7 +126,7 @@ int main(int argc, char **argv){
             fourthChar = fgetc(stdin);
         }
            
-            for (x = 0; x < memory -1; x++) {              //Check to determine if the unicode was already put in
+            for (x = 0; x < memory; x++) {              //Check to determine if the unicode was already put in
                 if (result == 1){
                     compare = (UTFG[x].byte_size1 == (unsigned char) letter);
                 }
