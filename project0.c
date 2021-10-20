@@ -1,4 +1,3 @@
-
 //
 //  main.c
 //  Project 0
@@ -107,23 +106,23 @@ int main(int argc, char **argv){
         if ((unsigned char) letter < 192){
             result = 1;
         }
-        if ((unsigned char) letter >= 192 & (unsigned char)letter < 224){
+        else if ((unsigned char) letter >= 192 & (unsigned char)letter < 224){
             result = 2;
         }
-        if ((unsigned char) letter >= 224 & (unsigned char)letter < 240){
+       else if ((unsigned char) letter >= 224 & (unsigned char)letter < 240){
             result = 3;
         }
-        if ((unsigned char)letter >= 240){
+       else if ((unsigned char)letter >= 240){
             result = 4;
         }
-        if (result == 2){                              //Will use the variable to assign the character
+        else if (result == 2){                              //Will use the variable to assign the character
             secChar = fgetc(stdin);
         }
-        if (result == 3) {
+       else if (result == 3) {
             secChar = fgetc(stdin);
             thirdChar = fgetc(stdin);
         }
-        if (result == 4) {
+        else if (result == 4) {
             secChar = fgetc(stdin);
             thirdChar = fgetc(stdin);
             fourthChar = fgetc(stdin);
@@ -133,13 +132,13 @@ int main(int argc, char **argv){
                 if (result == 1){
                     compare = (UTFG[x].byte_size1 == (unsigned char) letter);
                 }
-                if (result == 2){
+                else if (result == 2){
                     compare = ((UTFG[x].byte_size1 == (unsigned char) letter) & ((UTFG[x].byte_size2) == (unsigned char) secChar));
                 }
-                if (result == 3){
+                else if (result == 3){
                     compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) & (UTFG[x].byte_size3 == (unsigned char) thirdChar);
                 }
-                if (result == 4){
+                else if (result == 4){
                     compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) &
                           (UTFG[x].byte_size3 == (unsigned char) thirdChar) & (UTFG[x].byte_size4 == (unsigned char) fourthChar);
                 }
@@ -154,16 +153,16 @@ int main(int argc, char **argv){
                 UTFG[memory].counter++;
                 if (result == 1)
                     UTFG[memory].byte_size1 = (unsigned char) letter;
-                if (result == 2) {
+                else if (result == 2) {
                     UTFG[memory].byte_size1 = (unsigned char) letter;
                     UTFG[memory].byte_size2 = (unsigned char) secChar;
                 }
-                if (result == 3){
+                else if (result == 3){
                     UTFG[memory].byte_size1 = (unsigned char) letter;
                     UTFG[memory].byte_size2 = (unsigned char) secChar;
                     UTFG[memory].byte_size3 = (unsigned char) thirdChar;
                 }
-                if (result == 4){
+               else if (result == 4){
                     UTFG[memory].byte_size1 = (unsigned char) letter;
                     UTFG[memory].byte_size2 = (unsigned char) secChar;
                     UTFG[memory].byte_size3 = (unsigned char) thirdChar;
@@ -178,3 +177,4 @@ int main(int argc, char **argv){
     printValues(UTFG, memory);
     return 0;
 }
+
