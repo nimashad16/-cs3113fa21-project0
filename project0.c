@@ -23,12 +23,12 @@ struct element{                                         //This will store the un
 };
 
 
-//This method will swap the position and object values of two different unicode characters
-void swapUniCode (struct element  *pos1, struct element *pos2) {
+
+void swapUniCode (struct element  *pos1, struct element *pos2) {          //Will swap the two positions of the object values of two different uni characters
     int newSize;
     int newCounter;
     
-    unsigned char store1 = pos1->byte_size1;
+    unsigned char store1 = pos1->byte_size1;                        //Stores the positions of the bytes
     unsigned char store2 = pos1->byte_size2;
     unsigned char store3 = pos1->byte_size3;
     unsigned char store4 = pos1->byte_size4;
@@ -36,27 +36,27 @@ void swapUniCode (struct element  *pos1, struct element *pos2) {
     newSize = pos1->size;
     newCounter = pos1->counter;
     
-    pos1->byte_size1 = pos2->byte_size1;
+    pos1->byte_size1 = pos2->byte_size1;                            //assigns the different byte size to their respected positions
     pos1->byte_size2 = pos2->byte_size2;
     pos1->byte_size3 = pos2->byte_size3;
     pos1->byte_size4 = pos2->byte_size4;
     pos1->size = pos2->size;
     pos1->counter = pos2->counter;
    
-    pos2->byte_size1 = store1;
+    pos2->byte_size1 = store1;                                  //Stores the bytes in to another unsigned char storage variable
     pos2->byte_size2 = store2;
     pos2->byte_size3 = store3;
     pos2->byte_size4 = store4;
-    pos2->size = newSize;
+    pos2->size = newSize;                                       //Updates the size to go back to the original position
     pos2->counter = newCounter;
 }
 
-//Will sort the elements and then print them out
-void printValues(struct element values[], int sizeOfStruct){
+
+void printValues(struct element values[], int sizeOfStruct){                         //Sorts the values and then prints them after swapping
     int maximum;
     int a;
     int b;
-    for (a = 0; a<sizeOfStruct - 1; a++){
+    for (a = 0; a<sizeOfStruct - 1; a++){                                   //In charge of finding the new max in each of the arrays
         maximum = a;
         for (b = a + 1; b < sizeOfStruct; b++) {
             if (values[b].counter > values[maximum].counter)
@@ -68,7 +68,7 @@ void printValues(struct element values[], int sizeOfStruct){
     }
     
     
-    for (a  = 0; a < sizeOfStruct; a++){                         //This for loop will print out the values
+    for (a  = 0; a < sizeOfStruct; a++){                      //This for loop will print out the values
         unsigned char byteArray[4];
         byteArray[3] = values[a].byte_size4;
         byteArray[2] = values[a].byte_size3;
@@ -78,7 +78,7 @@ void printValues(struct element values[], int sizeOfStruct){
         unsigned char *characters = &byteArray[0];
         
      
-        printf("%s", characters);
+        printf("%s", characters);                                       //Will print the characters and their values
         printf("->");
         printf("%d\n", values[a].counter);
     }
@@ -147,11 +147,14 @@ int main(int argc, char **argv){
             }
         if (compare == 1){                           //Increases the count of unicode characters
                 UTFG[x].counter++;
+            compare = 0;
+             letter = fgetc(stdin);
         }
         else {
                 UTFG[memory].counter++;
-                if (result == 1)
+            if (result == 1) {                                          //Uses the result that was assigned to determine the letter in the UTFG array
                     UTFG[memory].byte_size1 = (unsigned char) letter;
+            }
                 else if (result == 2) {
                     UTFG[memory].byte_size1 = (unsigned char) letter;
                     UTFG[memory].byte_size2 = (unsigned char) secChar;
@@ -167,14 +170,12 @@ int main(int argc, char **argv){
                     UTFG[memory].byte_size3 = (unsigned char) thirdChar;
                     UTFG[memory].byte_size4 = (unsigned char) fourthChar;
                 }
+                compare = 0;
+             letter = fgetc(stdin);
                 UTFG[memory].size = UTFG[memory].byte_size1 + UTFG[memory].byte_size2 + UTFG[memory].byte_size3 + UTFG[memory].byte_size4;
                 memory++;
             }
-        compare = 0;
-        letter = fgetc(stdin);
     }
     printValues(UTFG, memory);
     return 0;
 }
-
-
