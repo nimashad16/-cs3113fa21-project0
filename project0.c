@@ -68,7 +68,7 @@ void printValues(struct element values[], int sizeOfStruct){
     }
     
     
-    for (a  = 0; a < sizeOfStruct; a++){                         //This for loop will print out the values
+    for (a  = 0; a < sizeOfStruct -1; a++){                         //This for loop will print out the values
         unsigned char byteArray[4];
         byteArray[0] = values[a].byte_size1;
         byteArray[1] = values[a].byte_size2;
