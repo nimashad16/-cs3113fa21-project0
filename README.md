@@ -4,7 +4,7 @@ Nima Shadaram
 
 
 
-2)
+2) In order to run our program using our testing file, we must first open the directory of the file in the terminal. first you create an "input.txt" file so that we can test the characters in it. We then use touch to input text into the file. Next we use the make all function in the make file in order to compile our project.We can then use the cat function to do cat input.txt |./project0 in order to run our txt file into our project to get our outputs. After this use the make clean functoin to get rid of any processes or directories that may have been created.
 
 
 
