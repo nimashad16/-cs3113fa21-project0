@@ -1,3 +1,4 @@
+
 //
 //  main.c
 //  Project 0
@@ -7,9 +8,9 @@
 //
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#define MAX_SIZE 1112064
+#include <string.h>
+#define MAX_SIZE 1112000
 
 
 struct element{                                         //This will store the unicode chars in a struct
@@ -70,27 +71,30 @@ void printValues(struct element values[], int sizeOfStruct){
     
     for (a  = 0; a < sizeOfStruct; a++){                         //This for loop will print out the values
         unsigned char byteArray[4];
-        byteArray[0] = values[a].byte_size1;
-        byteArray[1] = values[a].byte_size2;
-        byteArray[2] = values[a].byte_size3;
         byteArray[3] = values[a].byte_size4;
-        unsigned char *string = &byteArray[0];
-        printf("%s", string);
+        byteArray[2] = values[a].byte_size3;
+        byteArray[1] = values[a].byte_size2;
+        byteArray[0] = values[a].byte_size1;
+      
+        unsigned char *characters = &byteArray[0];
+        
+        if(*characters != '\n'){
+        printf("%s", characters);
         printf("->");
         printf("%d\n", values[a].counter);
+        }
     }
 }
-
 
 int main(int argc, char **argv){
     
     struct element *UTFG = malloc(MAX_SIZE * sizeof(struct element));    //This will point to the variable in the memory
-    
+     memset(UTFG, 0, sizeof(UTFG));
     char letter;
      int result;                                     //stores byte size result
      int memory = 0;                                    //Accesses the struct variables from the memory
      int compare = 0;                               //int variable to compare 2 unicode characters
-     int a;                                         //reads in first byte of unicode character
+     int x;                                         //reads in first byte of unicode character
      letter = fgetc(stdin);                         //Gets the letter of the standard input
      char secChar;                                   //Stores the bytes of the characters
      char thirdChar;
@@ -98,7 +102,7 @@ int main(int argc, char **argv){
     
     
    
-    memset(UTFG, 0, sizeof(UTFG));
+   
     while (letter  != EOF) {                //This will determine the number of bytes to be assigned
         if ((unsigned char) letter < 192){
             result = 1;
@@ -125,26 +129,26 @@ int main(int argc, char **argv){
             fourthChar = fgetc(stdin);
         }
            
-            for (a = 0; a < memory; a++) {              //Check to determine if the unicode was already put in
+            for (x = 0; x < memory; x++) {              //Check to determine if the unicode was already put in
                 if (result == 1){
-                    compare = (UTFG[a].byte_size1 == (unsigned char) letter);
+                    compare = (UTFG[x].byte_size1 == (unsigned char) letter);
                 }
                 if (result == 2){
-                    compare = ((UTFG[a].byte_size1 == (unsigned char) letter) & ((UTFG[a].byte_size2) == (unsigned char) secChar));
+                    compare = ((UTFG[x].byte_size1 == (unsigned char) letter) & ((UTFG[x].byte_size2) == (unsigned char) secChar));
                 }
                 if (result == 3){
-                    compare = (UTFG[a].byte_size1 == (unsigned char) letter) & (UTFG[a].byte_size2 == (unsigned char) secChar) & (UTFG[a].byte_size3 == (unsigned char) thirdChar);
+                    compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) & (UTFG[x].byte_size3 == (unsigned char) thirdChar);
                 }
                 if (result == 4){
-                    compare = (UTFG[a].byte_size1 == (unsigned char) letter) & (UTFG[a].byte_size2 == (unsigned char) secChar) &
-                          (UTFG[a].byte_size3 == (unsigned char) thirdChar) & (UTFG[a].byte_size4 == (unsigned char) fourthChar);
+                    compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) &
+                          (UTFG[x].byte_size3 == (unsigned char) thirdChar) & (UTFG[x].byte_size4 == (unsigned char) fourthChar);
                 }
                 if (compare == 1){
                     break;
                 }
             }
         if (compare == 1){                           //Increases the count of unicode characters
-                UTFG[a].counter++;
+                UTFG[x].counter++;
         }
         else {
                 UTFG[memory].counter++;
