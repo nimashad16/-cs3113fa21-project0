@@ -77,11 +77,11 @@ void printValues(struct element values[], int sizeOfStruct){
       
         unsigned char *characters = &byteArray[0];
         
-        if(*characters != '\n'){
+        
         printf("%s", characters);
         printf("->");
         printf("%d\n", values[a].counter);
-        }
+        
     }
 }
 
