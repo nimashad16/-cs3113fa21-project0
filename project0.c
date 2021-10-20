@@ -132,13 +132,13 @@ int main(int argc, char **argv){
                 if (result == 1){
                     compare = (UTFG[x].byte_size1 == (unsigned char) letter);
                 }
-                else if (result == 2){
+                if (result == 2){
                     compare = (((UTFG[x].byte_size2) == (unsigned char) secChar) & (UTFG[x].byte_size1 == (unsigned char) letter));
                 }
-                else if (result == 3){
+                if (result == 3){
                     compare = (UTFG[x].byte_size3 == (unsigned char) thirdChar) & (UTFG[x].byte_size2 == (unsigned char) secChar) & (UTFG[x].byte_size1 == (unsigned char) letter);
                 }
-                else if (result == 4){
+                if (result == 4){
                     compare = (UTFG[x].byte_size4 == (unsigned char) fourthChar) & (UTFG[x].byte_size3 == (unsigned char) secChar) &
                           (UTFG[x].byte_size2 == (unsigned char) thirdChar) & (UTFG[x].byte_size1 == (unsigned char) letter);
                 }
@@ -154,16 +154,16 @@ int main(int argc, char **argv){
                 UTFG[memory].counter++;
                 if (result == 1)
                     UTFG[memory].byte_size1 = (unsigned char) letter;
-                else if (result == 2) {
+                if (result == 2) {
                     UTFG[memory].byte_size1 = (unsigned char) letter;
                     UTFG[memory].byte_size2 = (unsigned char) secChar;
                 }
-                else if (result == 3){
+                if (result == 3){
                     UTFG[memory].byte_size1 = (unsigned char) letter;
                     UTFG[memory].byte_size2 = (unsigned char) secChar;
                     UTFG[memory].byte_size3 = (unsigned char) thirdChar;
                 }
-                else if (result == 4){
+                if (result == 4){
                     UTFG[memory].byte_size1 = (unsigned char) letter;
                     UTFG[memory].byte_size2 = (unsigned char) secChar;
                     UTFG[memory].byte_size3 = (unsigned char) thirdChar;
