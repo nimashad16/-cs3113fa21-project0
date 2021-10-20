@@ -77,7 +77,7 @@ void printValues(struct element values[], int sizeOfStruct){
         unsigned char *string = &byteArray[0];
         printf("%s", string);
         printf("->");
-        printf("%d\n", values[a].counter);
+       // printf("%d\n", values[a].counter);
     }
 }
 
