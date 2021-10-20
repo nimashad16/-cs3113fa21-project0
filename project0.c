@@ -1,3 +1,4 @@
+
 //
 //  main.c
 //  Project 0
@@ -7,9 +8,9 @@
 //
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#define MAX_SIZE 1112000
+#include <stdlib.h>
+#define MAX_SIZE 1112064
 
 
 struct element{                                         //This will store the unicode chars in a struct
@@ -70,20 +71,17 @@ void printValues(struct element values[], int sizeOfStruct){
     
     for (a  = 0; a < sizeOfStruct; a++){                         //This for loop will print out the values
         unsigned char byteArray[4];
-        byteArray[3] = values[a].byte_size4;
-        byteArray[2] = values[a].byte_size3;
-        byteArray[1] = values[a].byte_size2;
         byteArray[0] = values[a].byte_size1;
-      
-        unsigned char *characters = &byteArray[0];
-        
-        
-        printf("%s", characters);
+        byteArray[1] = values[a].byte_size2;
+        byteArray[2] = values[a].byte_size3;
+        byteArray[3] = values[a].byte_size4;
+        unsigned char *string = &byteArray[0];
+        printf("%s", string);
         printf("->");
         printf("%d\n", values[a].counter);
-        
     }
 }
+
 
 int main(int argc, char **argv){
     
@@ -177,5 +175,3 @@ int main(int argc, char **argv){
     printValues(UTFG, memory);
     return 0;
 }
-
-
