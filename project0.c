@@ -1,4 +1,4 @@
-//
+
 //  main.c
 //  Project 0
 //
@@ -115,7 +115,7 @@ int main(int argc, char **argv){
        else if ((unsigned char)letter >= 240){
             result = 4;
         }
-        else if (result == 2){                              //Will use the variable to assign the character
+         if (result == 2){                              //Will use the variable to assign the character
             secChar = fgetc(stdin);
         }
        else if (result == 3) {
@@ -177,4 +177,5 @@ int main(int argc, char **argv){
     printValues(UTFG, memory);
     return 0;
 }
+
 
