@@ -77,6 +77,7 @@ void printValues(struct element values[], int sizeOfStruct){                    
       
         unsigned char *characters = &byteArray[0];
         
+     
         printf("%s", characters);                                       //Will print the characters and their values
         printf("->");
         printf("%d\n", values[a].counter);
@@ -169,6 +170,9 @@ int main(int argc, char **argv){
                     UTFG[memory].byte_size3 = (unsigned char) thirdChar;
                     UTFG[memory].byte_size4 = (unsigned char) fourthChar;
                 }
+               else{
+                   break;
+               }
                 compare = 0;
              letter = fgetc(stdin);
                 UTFG[memory].size = UTFG[memory].byte_size1 + UTFG[memory].byte_size2 + UTFG[memory].byte_size3 + UTFG[memory].byte_size4;
