@@ -89,20 +89,15 @@ int main(int argc, char **argv){
     UTFG = malloc(MAX_SIZE * sizeof(struct element));    //This will point to the variable in the memory
      
     memset(UTFG, 0, sizeof(UTFG));
+    char letter;                                      //Gets the letter of the standard input
+    letter = fgetc(stdin);
     
      int result;                                     //stores byte size result
      int memory = 0;                                    //Accesses the struct variables from the memory
      int compare = 0;                               //int variable to compare 2 unicode characters
-     int x;                                         //reads in first byte of unicode character
-     char secChar;                                   //Stores the bytes of the characters
-     char thirdChar;
-     char fourthChar;
-    char letter;
-    letter = fgetc(stdin);                         //Gets the letter of the standard input
     
-    
-   
-   
+                          
+         
     while (letter  != EOF) {                //This will determine the number of bytes to be assigned
         if ((unsigned char) letter < 192){
             result = 1;
@@ -117,6 +112,9 @@ int main(int argc, char **argv){
             result = 4;
         }
         
+        char secChar;                                   //Stores the bytes of the characters
+         char thirdChar;
+         char fourthChar;
         
         if (result == 2){                              //Will use the variable to assign the character
             secChar = fgetc(stdin);
@@ -130,7 +128,7 @@ int main(int argc, char **argv){
             thirdChar = fgetc(stdin);
             fourthChar = fgetc(stdin);
         }
-           
+            int x;                                         //reads in first byte of unicode character
             for (x = 0; x < memory; x++) {              //Check to determine if the unicode was already put in
                 if (result == 4){
                                  compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) &
@@ -170,19 +168,19 @@ int main(int argc, char **argv){
                     UTFG[memory].byte_size2 = (unsigned char) secChar;
                     UTFG[memory].byte_size3 = (unsigned char) thirdChar;
                 }
-               else if (result == 4){
+                else if (result == 4){
                     UTFG[memory].byte_size1 = (unsigned char) letter;
                     UTFG[memory].byte_size2 = (unsigned char) secChar;
                     UTFG[memory].byte_size3 = (unsigned char) thirdChar;
                     UTFG[memory].byte_size4 = (unsigned char) fourthChar;
                 }
-               else{
+                else {
                    break;
                }
                 compare = 0;
              letter = fgetc(stdin);
-                UTFG[memory].size = UTFG[memory].byte_size1 + UTFG[memory].byte_size2 + UTFG[memory].byte_size3 + UTFG[memory].byte_size4;
-                memory++;
+            UTFG[memory].size = UTFG[memory].byte_size1 + UTFG[memory].byte_size2 + UTFG[memory].byte_size3 + UTFG[memory].byte_size4;
+                memory = memory + 1;
             }
     }
     printValues(UTFG, memory);
