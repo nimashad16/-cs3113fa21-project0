@@ -86,17 +86,20 @@ void printValues(struct element values[], int sizeOfStruct){                    
 
 int main(int argc, char **argv){
     
-    struct element *UTFG = malloc(MAX_SIZE * sizeof(struct element));    //This will point to the variable in the memory
-     memset(UTFG, 0, sizeof(UTFG));
-    char letter;
+    struct element *UTFG;
+    UTFG = malloc(MAX_SIZE * sizeof(struct element));    //This will point to the variable in the memory
+     
+    memset(UTFG, 0, sizeof(UTFG));
+    
      int result;                                     //stores byte size result
      int memory = 0;                                    //Accesses the struct variables from the memory
      int compare = 0;                               //int variable to compare 2 unicode characters
      int x;                                         //reads in first byte of unicode character
-     letter = fgetc(stdin);                         //Gets the letter of the standard input
      char secChar;                                   //Stores the bytes of the characters
      char thirdChar;
      char fourthChar;
+    char letter;
+    letter = fgetc(stdin);                         //Gets the letter of the standard input
     
     
    
@@ -111,10 +114,12 @@ int main(int argc, char **argv){
        else if ((unsigned char) letter >= 224 & (unsigned char)letter < 240){
             result = 3;
         }
-       else if ((unsigned char)letter >= 240){
+       else{
             result = 4;
         }
-         if (result == 2){                              //Will use the variable to assign the character
+        
+        
+        if (result == 2){                              //Will use the variable to assign the character
             secChar = fgetc(stdin);
         }
        else if (result == 3) {
@@ -128,19 +133,21 @@ int main(int argc, char **argv){
         }
            
             for (x = 0; x < memory; x++) {              //Check to determine if the unicode was already put in
-                if (result == 1){
-                    compare = (UTFG[x].byte_size1 == (unsigned char) letter);
+                if (result == 4){
+                                 compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) &
+                                       (UTFG[x].byte_size3 == (unsigned char) thirdChar) & (UTFG[x].byte_size4 == (unsigned char) fourthChar);
+                             }
+                else if (result == 3){
+                    compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) & (UTFG[x].byte_size3 == (unsigned char) thirdChar);
                 }
                 else if (result == 2){
                     compare = ((UTFG[x].byte_size1 == (unsigned char) letter) & ((UTFG[x].byte_size2) == (unsigned char) secChar));
                 }
-                else if (result == 3){
-                    compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) & (UTFG[x].byte_size3 == (unsigned char) thirdChar);
+                
+               else if (result == 1){
+                    compare = (UTFG[x].byte_size1 == (unsigned char) letter);
                 }
-                else if (result == 4){
-                    compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) &
-                          (UTFG[x].byte_size3 == (unsigned char) thirdChar) & (UTFG[x].byte_size4 == (unsigned char) fourthChar);
-                }
+              
                 if (compare == 1){
                     break;
                 }
@@ -182,3 +189,4 @@ int main(int argc, char **argv){
     printValues(UTFG, memory);
     return 0;
 }
+
