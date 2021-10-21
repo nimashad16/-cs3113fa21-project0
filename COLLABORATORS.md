@@ -6,6 +6,8 @@ COLLABORATORS
 ### Emmanuel George | emmanuelgeorge@ou.edu | Really helped with explaining the project in the beginning and understanding what the different steps were that I would have to take prior to going into it. Like how I don't need to convert the chars to binary and such
 #Anthony Immensuch| | Not sure of his email| Helped with discussing planning of what methods would need to accomplish 
 
+## Armon Hahslemi | | I helped explain the main method to him
+
 # Websites that helped me:
 # https://stackoverflow.com/questions/643694/what-is-the-difference-between-utf-8-and-unicode/27939161#27939161:
 # https://www.fileformat.info/info/unicode/utf8.htm
