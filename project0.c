@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX_SIZE 1112000
+#define MAX_SIZE 1111111
 
 
 struct element{                                         //This will store the unicode chars in a struct
