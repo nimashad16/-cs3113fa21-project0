@@ -1,8 +1,7 @@
-//
 //  main.c
 //  Project 0
 //
-//  Created by Nima $wagaram on 10/13/21.
+//  Created by Nima $wagaram on 10/09/21.
 //  Copyright © 2021 Nima $wagaram. All rights reserved.
 //
 
@@ -40,6 +39,7 @@ void swapUniCode (struct element  *pos1, struct element *pos2) {          //Will
     pos1->byte_size2 = pos2->byte_size2;
     pos1->byte_size3 = pos2->byte_size3;
     pos1->byte_size4 = pos2->byte_size4;
+    
     pos1->size = pos2->size;
     pos1->counter = pos2->counter;
    
@@ -47,10 +47,10 @@ void swapUniCode (struct element  *pos1, struct element *pos2) {          //Will
     pos2->byte_size2 = store2;
     pos2->byte_size3 = store3;
     pos2->byte_size4 = store4;
+   
     pos2->size = newSize;                                       //Updates the size to go back to the original position
     pos2->counter = newCounter;
 }
-
 
 void printValues(struct element values[], int sizeOfStruct){                         //Sorts the values and then prints them after swapping
     int maximum;
@@ -58,10 +58,12 @@ void printValues(struct element values[], int sizeOfStruct){                    
     int b;
     for (a = 0; a<sizeOfStruct - 1; a++){                                   //In charge of finding the new max in each of the arrays
         maximum = a;
+       
         for (b = a + 1; b < sizeOfStruct; b++) {
             if (values[b].counter > values[maximum].counter)
                 maximum = b;
         }
+       
         if (maximum != a) {
             swapUniCode(&values[a], &values[maximum]);
         }
@@ -84,7 +86,6 @@ void printValues(struct element values[], int sizeOfStruct){                    
 }
 
 int main(int argc, char **argv){
-    
     struct element *UTFG;
     UTFG = malloc(MAX_SIZE * sizeof(struct element));    //This will point to the variable in the memory
      
@@ -112,7 +113,7 @@ int main(int argc, char **argv){
             result = 4;
         }
         
-        char secChar;                                   //Stores the bytes of the characters
+         char secChar;                                   //Stores the bytes of the characters
          char thirdChar;
          char fourthChar;
         
@@ -131,8 +132,8 @@ int main(int argc, char **argv){
             int x;                                         //reads in first byte of unicode character
             for (x = 0; x < memory; x++) {              //Check to determine if the unicode was already put in
                 if (result == 4){
-                                 compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) &
-                                       (UTFG[x].byte_size3 == (unsigned char) thirdChar) & (UTFG[x].byte_size4 == (unsigned char) fourthChar);
+                    compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) &
+                            (UTFG[x].byte_size3 == (unsigned char) thirdChar) & (UTFG[x].byte_size4 == (unsigned char) fourthChar);
                              }
                 else if (result == 3){
                     compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) & (UTFG[x].byte_size3 == (unsigned char) thirdChar);
@@ -178,12 +179,11 @@ int main(int argc, char **argv){
                    break;
                }
                 compare = 0;
-             letter = fgetc(stdin);
-            UTFG[memory].size = UTFG[memory].byte_size1 + UTFG[memory].byte_size2 + UTFG[memory].byte_size3 + UTFG[memory].byte_size4;
+                letter = fgetc(stdin);
+                UTFG[memory].size = UTFG[memory].byte_size1 + UTFG[memory].byte_size2 + UTFG[memory].byte_size3 + UTFG[memory].byte_size4;                  //This will add all the byte sizes to the UTFG
                 memory = memory + 1;
             }
     }
-    printValues(UTFG, memory);
+    printValues(UTFG, memory);                                //print out the values
     return 0;
 }
-
