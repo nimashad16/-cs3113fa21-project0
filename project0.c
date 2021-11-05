@@ -1,189 +1,130 @@
-//  main.c
-//  Project 0
 //
-//  Created by Nima $wagaram on 10/09/21.
+//  main.c
+//  Project1
+//
+//  Created by Nima $wagaram on 11/1/21.
 //  Copyright © 2021 Nima $wagaram. All rights reserved.
 //
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX_SIZE 1111111
 
+struct Process{
+    int PID;
+    int burstTime;
+    int priority;
+};
 
-struct element{                                         //This will store the unicode chars in a struct
-    int counter;
-    int size;
-    
-    unsigned char byte_size1;
-    unsigned char byte_size2;
-    unsigned char byte_size3;
-    unsigned char byte_size4;
+struct ProcessInfo{
+    int PID;
+    int totalBurstTime;
+    int priority;
+    int waitingTime;
+    int responseTime;
+    int turnAroundTime;
+    int pCtr;
 };
 
 
 
-void swapUniCode (struct element  *pos1, struct element *pos2) {          //Will swap the two positions of the object values of two different uni characters
-    int newSize;
-    int newCounter;
+void getTimeInfos(struct Process processQueue[],struct ProcessInfo array[], int numProcesses, int numPIDs){
+    int totalContextSwitches = 0;
+    int voluntarySwitches = 0;
+    int nonVoluntarySwitches;
+    int x = 0;
+    int y = 0;
+    int pFlag = 0;
+    int prevID = 0;
+    while(x < numPIDs){
+        y = 0;
+        pFlag = 0;
+        while(y < numProcesses && array[x].pCtr > 0){
+            if (processQueue[y].PID != prevID){
+                totalContextSwitches += 1;
+                prevID = processQueue[y].PID;
+            }
+            if (processQueue[y].PID == array[x].PID){
+                if (pFlag == 0)
+                    pFlag = 1;
+                array[x].pCtr -= 1;
+                continue;
+             }
+            if(array[x].pCtr == 0){
+                voluntarySwitches += 1;
+            }
+            
+            if (pFlag != 1)
+                array[x].responseTime += processQueue[y].burstTime;
+            array[x].waitingTime += processQueue[y].burstTime;
+            y++;
+    }
+        x++;
+}
+    nonVoluntarySwitches = totalContextSwitches - voluntarySwitches;
+    int allBurstTimes = 0;
+    int avgThroughput = 0;
+    int avgTurnAroundTime = 0;
+    int avgWaitingTime = 0;
+    int rTime = 0;
+    for(int a =0; a < numPIDs;a++){
+        allBurstTimes += array[a].totalBurstTime;
+        avgTurnAroundTime += array[a].waitingTime + array[a].totalBurstTime;
+        avgWaitingTime += array[a].waitingTime;
+        rTime += array[a].responseTime;
+    }
+     avgThroughput = numPIDs / allBurstTimes;
+     avgTurnAroundTime /= numPIDs;
+     avgWaitingTime /= numPIDs;
+     rTime /= numPIDs;
+  
+       printf("%d\n", nonVoluntarySwitches);                               //nonVoluntary
+       printf("100.0\n");                                  //CPU Utilization
+       printf("%0.02f",avgThroughput);                        //Throughput
+       printf("%0.02f",avgTurnAroundTime);                         //TurnAround
+       printf("%0.02f", avgWaitingTime);                          //WaitingTime
+       printf("%0.02f", rTime);                          //rTime
     
-    unsigned char store1 = pos1->byte_size1;                        //Stores the positions of the bytes
-    unsigned char store2 = pos1->byte_size2;
-    unsigned char store3 = pos1->byte_size3;
-    unsigned char store4 = pos1->byte_size4;
-     
-    newSize = pos1->size;
-    newCounter = pos1->counter;
-    
-    pos1->byte_size1 = pos2->byte_size1;                            //assigns the different byte size to their respected positions
-    pos1->byte_size2 = pos2->byte_size2;
-    pos1->byte_size3 = pos2->byte_size3;
-    pos1->byte_size4 = pos2->byte_size4;
-    
-    pos1->size = pos2->size;
-    pos1->counter = pos2->counter;
-   
-    pos2->byte_size1 = store1;                                  //Stores the bytes in to another unsigned char storage variable
-    pos2->byte_size2 = store2;
-    pos2->byte_size3 = store3;
-    pos2->byte_size4 = store4;
-   
-    pos2->size = newSize;                                       //Updates the size to go back to the original position
-    pos2->counter = newCounter;
+    // return nonVoluntarySwitches,avgThroughput,avgTurnAroundTime,avgWaitingTime,rTime;
 }
 
-void printValues(struct element values[], int sizeOfStruct){                         //Sorts the values and then prints them after swapping
-    int maximum;
+
+
+int main(int argc, char * argv[]) {
+    
+    int start;
+    int numPIDs;
+    int numProcesses;
+    FILE* fp;
+    if (argc < 1) {
+        fp = fopen(argv[1],"r");
+       
+    }
+    else {
+         fp = stdin;
+    }
+    fscanf(fp,"%d", &start);
+    fscanf(fp,"%d", &numPIDs);
+    fscanf(fp,"%d", &numProcesses);
+    
+    struct ProcessInfo* arrayStore = malloc(numPIDs*sizeof(arrayStore));
+    struct Process* processQueue = malloc(numProcesses*sizeof(processQueue));
+
     int a;
-    int b;
-    for (a = 0; a<sizeOfStruct - 1; a++){                                   //In charge of finding the new max in each of the arrays
-        maximum = a;
-       
-        for (b = a + 1; b < sizeOfStruct; b++) {
-            if (values[b].counter > values[maximum].counter)
-                maximum = b;
-        }
-       
-        if (maximum != a) {
-            swapUniCode(&values[a], &values[maximum]);
-        }
-    }
-    
-    
-    for (a  = 0; a < sizeOfStruct; a++){                      //This for loop will print out the values
-        unsigned char byteArray[4];
-        byteArray[3] = values[a].byte_size4;
-        byteArray[2] = values[a].byte_size3;
-        byteArray[1] = values[a].byte_size2;
-        byteArray[0] = values[a].byte_size1;
-      
-        unsigned char *characters = &byteArray[0];
-        
-        printf("%s", characters);                                       //Will print the characters and their values
-        printf("->");
-        printf("%d\n", values[a].counter);
-    }
-}
+    for(a =0; a<numProcesses; ++a ){
+        fscanf(fp,"%d %d %d", &processQueue[a].PID, &processQueue[a].burstTime,&processQueue[a].priority);
+        arrayStore[processQueue[a].PID-1].totalBurstTime += processQueue[a].burstTime;
+        arrayStore[processQueue[a].PID-1].pCtr += 1;
+   }
 
-int main(int argc, char **argv){
-    struct element *UTFG;
-    UTFG = malloc(MAX_SIZE * sizeof(struct element));    //This will point to the variable in the memory
-     
-    memset(UTFG, 0, sizeof(UTFG));
-    char letter;                                      //Gets the letter of the standard input
-    letter = fgetc(stdin);
+    printf("%d\n",numPIDs);                       //Gets voluntary context switch
+ 
     
-     int result;                                     //stores byte size result
-     int memory = 0;                                    //Accesses the struct variables from the memory
-     int compare = 0;                               //int variable to compare 2 unicode characters
+    getTimeInfos(processQueue, arrayStore, numProcesses, numPIDs);
     
-                          
-         
-    while (letter  != EOF) {                //This will determine the number of bytes to be assigned
-        if ((unsigned char) letter < 192){
-            result = 1;
-        }
-        else if ((unsigned char) letter >= 192 & (unsigned char)letter < 224){
-            result = 2;
-        }
-       else if ((unsigned char) letter >= 224 & (unsigned char)letter < 240){
-            result = 3;
-        }
-       else{
-            result = 4;
-        }
-        
-         char secChar;                                   //Stores the bytes of the characters
-         char thirdChar;
-         char fourthChar;
-        
-        if (result == 2){                              //Will use the variable to assign the character
-            secChar = fgetc(stdin);
-        }
-       else if (result == 3) {
-            secChar = fgetc(stdin);
-            thirdChar = fgetc(stdin);
-        }
-        else if (result == 4) {
-            secChar = fgetc(stdin);
-            thirdChar = fgetc(stdin);
-            fourthChar = fgetc(stdin);
-        }
-            int x;                                         //reads in first byte of unicode character
-            for (x = 0; x < memory; x++) {              //Check to determine if the unicode was already put in
-                if (result == 4){
-                    compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) &
-                            (UTFG[x].byte_size3 == (unsigned char) thirdChar) & (UTFG[x].byte_size4 == (unsigned char) fourthChar);
-                             }
-                else if (result == 3){
-                    compare = (UTFG[x].byte_size1 == (unsigned char) letter) & (UTFG[x].byte_size2 == (unsigned char) secChar) & (UTFG[x].byte_size3 == (unsigned char) thirdChar);
-                }
-                else if (result == 2){
-                    compare = ((UTFG[x].byte_size1 == (unsigned char) letter) & ((UTFG[x].byte_size2) == (unsigned char) secChar));
-                }
-                
-               else if (result == 1){
-                    compare = (UTFG[x].byte_size1 == (unsigned char) letter);
-                }
-              
-                if (compare == 1){
-                    break;
-                }
-            }
-        if (compare == 1){                           //Increases the count of unicode characters
-            UTFG[x].counter = UTFG[x].counter + 1;
-            compare = 0;
-            letter = fgetc(stdin);
-        }
-        else {
-                UTFG[memory].counter++;
-            if (result == 1) {                                          //Uses the result that was assigned to determine the letter in the UTFG array
-                    UTFG[memory].byte_size1 = (unsigned char) letter;
-            }
-                else if (result == 2) {
-                    UTFG[memory].byte_size1 = (unsigned char) letter;
-                    UTFG[memory].byte_size2 = (unsigned char) secChar;
-                }
-                else if (result == 3){
-                    UTFG[memory].byte_size1 = (unsigned char) letter;
-                    UTFG[memory].byte_size2 = (unsigned char) secChar;
-                    UTFG[memory].byte_size3 = (unsigned char) thirdChar;
-                }
-                else if (result == 4){
-                    UTFG[memory].byte_size1 = (unsigned char) letter;
-                    UTFG[memory].byte_size2 = (unsigned char) secChar;
-                    UTFG[memory].byte_size3 = (unsigned char) thirdChar;
-                    UTFG[memory].byte_size4 = (unsigned char) fourthChar;
-                }
-                else {
-                   break;
-               }
-                compare = 0;
-                letter = fgetc(stdin);
-                UTFG[memory].size = UTFG[memory].byte_size1 + UTFG[memory].byte_size2 + UTFG[memory].byte_size3 + UTFG[memory].byte_size4;                  //This will add all the byte sizes to the UTFG
-                memory = memory + 1;
-            }
-    }
-    printValues(UTFG, memory);                                //print out the values
     return 0;
-}
+    }
+    
+
+
+
+
